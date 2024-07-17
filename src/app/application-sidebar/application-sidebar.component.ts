@@ -4,9 +4,11 @@ import { Component } from '@angular/core';
   selector: 'app-application-sidebar',
   standalone: true,
   imports: [],
-  templateUrl: './application-sidebar.component.html',
-  styleUrl: './application-sidebar.component.scss'
+  template: ` <p>Application sidebar works!</p> `,
+  styleUrl: './application-sidebar.component.scss',
 })
 export class ApplicationSidebarComponent {
-
+  public ngOnDestroy() {
+    console.log('🚀 ~ ApplicationSidebarComponent ~ ngOnDestroy ');
+  }
 }
