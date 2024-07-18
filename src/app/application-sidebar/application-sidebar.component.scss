@@ -1,0 +1,40 @@
+:host {
+  display: block;
+  .menu-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: rgb(149, 51, 111);
+    color: white;
+    align-items: center;
+    justify-content: center;
+
+    .menu-icon-wrapper {
+      width: 36px;
+      height: 36px;
+    }
+
+    .menu-item-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: start;
+      gap: 24px;
+    }
+
+    .rotate180 {
+      display: block;
+      transform: rotate(180deg);
+    }
+
+    .expand-icon-wrapper {
+      padding-top: 16px;
+    }
+  }
+  .expand {
+    width: 450px;
+  }
+
+  .collapsed {
+    width: 80px;
+  }
+}
