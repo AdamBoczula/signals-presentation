@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, input, model } from '@angular/core';
+import { Component, input, model, Output } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { MenuModel } from '../menu.model';
 import { faAnglesRight } from '@fortawesome/free-solid-svg-icons';
