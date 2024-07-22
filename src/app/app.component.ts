@@ -1,9 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, effect, signal } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import {
+  faBomb,
+  faHouse,
+  faUserSecret,
+} from '@fortawesome/free-solid-svg-icons';
 import { ApplicationSidebarComponent } from './application-sidebar/application-sidebar.component';
 import { MenuModel } from './menu.model';
-import { faBomb, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { isEqual } from 'lodash';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +18,7 @@ import { faBomb, faHouse } from '@fortawesome/free-solid-svg-icons';
     <div class="app-container">
       <app-application-sidebar
         [(isOpened)]="isMenuOpen"
-        [menuModel]="menuModel"
+        [menuModel]="menuModel()"
       />
 
       <div class="app-content">
@@ -24,6 +29,7 @@ import { faBomb, faHouse } from '@fortawesome/free-solid-svg-icons';
         <hr />
 
         <button (click)="expandMenu()">Expand menu</button>
+        <button (click)="addSecretMenu()">Add secret menu</button>
       </div>
     </div>
   `,
@@ -33,10 +39,19 @@ export class AppComponent {
   public title = signal('Angular with Signal.');
   public duration = signal(0);
   public durationInHrs = computed(() => this.duration() / 60);
-  public readonly menuModel: MenuModel[] = [
-    { text: 'Home', icon: faHouse },
-    { text: 'Cool things', icon: faBomb },
-  ];
+  public readonly menuModel = signal<MenuModel[]>(
+    [
+      { text: 'Home', icon: faHouse },
+      { text: 'Cool things', icon: faBomb },
+    ],
+    {
+      equal: (a, b) => {
+        console.log('🚀 ~ AppComponent ~ b:', b);
+        console.log('🚀 ~ AppComponent ~ a:', a);
+        return isEqual(a, b);
+      },
+    },
+  );
   public isMenuOpen = signal(false);
   public intervalHandler;
   public timeoutHandler;
@@ -59,10 +74,21 @@ export class AppComponent {
       const seconds = localStorage.getItem('timeInSec');
       console.log('🍕 Logger function for duration: ', seconds);
     });
+
+    effect(() => {
+      console.log('🎉🎉CHANGED MENU🎉🎉 ', this.menuModel());
+    });
   }
 
   public expandMenu(): void {
     this.isMenuOpen.set(true);
+  }
+
+  public addSecretMenu(): void {
+    this.menuModel.update((actualMenu) => {
+      actualMenu.push({ text: 'Secret Spot', icon: faUserSecret });
+      return actualMenu;
+    });
   }
 
   public ngOnDestroy() {
