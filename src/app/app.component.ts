@@ -38,19 +38,10 @@ export class AppComponent {
   public title = signal('Angular with Signal.');
   public duration = signal(0);
   public durationInHrs = computed(() => this.duration() / 60);
-  public readonly menuModel = signal<MenuModel[]>(
-    [
-      { text: 'Home', icon: faHouse },
-      { text: 'Cool things', icon: faBomb },
-    ],
-    {
-      equal: (a, b) => {
-        console.log('🚀 ~ AppComponent ~ b:', b);
-        console.log('🚀 ~ AppComponent ~ a:', a);
-        return a === b;
-      },
-    },
-  );
+  public readonly menuModel = signal<MenuModel[]>([
+    { text: 'Home', icon: faHouse },
+    { text: 'Cool things', icon: faBomb },
+  ]);
   public isMenuOpen = signal(false);
   public intervalHandler;
   public timeoutHandler;
@@ -65,17 +56,13 @@ export class AppComponent {
       1000,
     );
 
-    // effect(() => {
-    //   // save on LocalStorage every change for duration().
-    //   localStorage.setItem('timeInSec', this.duration() + '');
-
-    //   // get from LocalStorage and print to the console.
-    //   const seconds = localStorage.getItem('timeInSec');
-    //   console.log('🍕 Logger function for duration: ', seconds);
-    // });
-
     effect(() => {
-      console.log('🎉🎉CHANGED MENU🎉🎉 ', this.menuModel());
+      // save on LocalStorage every change for duration().
+      localStorage.setItem('timeInSec', this.duration() + '');
+
+      // get from LocalStorage and print to the console.
+      const seconds = localStorage.getItem('timeInSec');
+      console.log('🍕 Logger function for duration: ', seconds);
     });
   }
 
@@ -85,9 +72,7 @@ export class AppComponent {
 
   public addSecretMenu(): void {
     this.menuModel.update((actualMenu) => {
-      // actualMenu.push({ text: 'Secret Spot', icon: faUserSecret });
       return [...actualMenu, { text: 'Secret Spot', icon: faUserSecret }];
-      // return actualMenu;
     });
   }
 
